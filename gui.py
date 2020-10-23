@@ -21,11 +21,13 @@ class User_gui(QWidget):
 		definitions = []
 		for item in information:
 				for element in item:
-					definitions.append(QLabel(element))
+					definitions.append(QLabel(element, self))
 		count = 1
 		for item in definitions:
-				item.move(0, count * 10)
-
+			item.move(0, count * 13)
+			count +=1
+			item.show()
+		self.setGeometry(500, 500, 500, 500)
 		self.setWindowTitle('Translate It!')
 		self.show()
 
