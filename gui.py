@@ -1,23 +1,33 @@
-from PyQt5.QtWidgets import QApplication, QLabel 
+import sys
+
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget
+
 import translate
-from sys import argv
 
-def user_gui(input): 
-	app = QApplication([])
-	
-	information = translate.search_item(input)
-	print('Showing results for:', input)
-	#print(information)
-	definitions = []
-	for item in information:
-		#print(item)
-		for element in item:
-			definitions.append(QLabel(element))
-	for item in definitions:
-		item.show()
+def main():
+	app = QApplication(sys.argv)
+	gui = User_gui()
+	sys.exit(app.exec_())
 
-	#label = QLabel()
-	#label.show()
-	app.exec()
+class User_gui(QWidget):
+	def __init__(self):
+		super().__init__()
+		self.initUI()
 
-user_gui(*argv[1:])
+	def initUI(self):
+		user_queue = input('Enter lookup: ')
+		print('Showing results for:', user_queue)
+		information = translate.search_item(user_queue)
+		definitions = []
+		for item in information:
+				for element in item:
+					definitions.append(QLabel(element))
+		count = 1
+		for item in definitions:
+				item.move(0, count * 10)
+
+		self.setWindowTitle('Translate It!')
+		self.show()
+
+if __name__ == '__main__': 
+    main()
