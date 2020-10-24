@@ -1,35 +1,53 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget
+from PyQt5.QtWidgets import (QWidget, QSlider, QLineEdit, QLabel, QPushButton, QScrollArea,QApplication,
+                             QHBoxLayout, QVBoxLayout, QMainWindow)
+from PyQt5.QtCore import Qt, QSize
+from PyQt5 import QtWidgets, uic
+
+from itertools import chain
 
 import translate
 
 def main():
 	app = QApplication(sys.argv)
-	gui = User_gui()
+	main = User_gui()
 	sys.exit(app.exec_())
 
-class User_gui(QWidget):
+
+class User_gui(QMainWindow):
 	def __init__(self):
 		super().__init__()
 		self.initUI()
 
 	def initUI(self):
+		self.scroll = QScrollArea()
+		self.widget = QWidget()
+		self.vbox = QVBoxLayout()
+
+		self.vbox.addWidget(QLabel('Translate it!'))
 		user_queue = input('Enter lookup: ')
 		print('Showing results for:', user_queue)
+		
 		information = translate.search_item(user_queue)
-		definitions = []
+		
 		for item in information:
 				for element in item:
-					definitions.append(QLabel(element, self))
-		count = 1
-		for item in definitions:
-			item.move(0, count * 13)
-			count +=1
-			item.show()
+					self.vbox.addWidget(QLabel(element))
+
+		self.widget.setLayout(self.vbox)
+
+		self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+		self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.scroll.setWidgetResizable(True)
+		self.scroll.setWidget(self.widget)
+		
+		self.setCentralWidget(self.scroll)
 		self.setGeometry(500, 500, 500, 500)
 		self.setWindowTitle('Translate It!')
 		self.show()
+
+		return
 
 if __name__ == '__main__': 
     main()
